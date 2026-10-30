@@ -1,0 +1,93 @@
+@startuml Inventory
+skinparam ClassAttributeIconSize 0
+
+class Inventory 
+{
+    Inventory();
+    ~Inventory();
+
+    + insert(itemName : std::string) : void
+    + remove(itemName : std::string) : void
+    + search(itemName : std::string) : bool
+    + search(itemNum : int) : bool
+
+    + getItemName(itemNum : int) : std::string
+    + getItemID(itemName : std::string) : int
+    + getItemCost(itemNum : int) : int
+
+    + ifItems() : bool
+
+    + addCoins(num : int) : void
+    + payCoins(num : int) : void
+    + getCoins() : int
+
+    + printInventory() : void
+    + printMerchantItems() : void
+
+    + performItemAbility(itemNum : int, characters[4] : Character *) : void
+
+    - itemName : std::string
+    - itemNum : int
+    - num : int
+    - inventoryCapacity = 5 : int
+    - coins = 20 : int
+    - itemCount = 0 : int
+
+    - items : std::vector<Item*>;
+
+    - htArr HashTable
+}
+
+class Item 
+{
+    + Item()
+    + Item(itemName : std::string, itemAbility : std::string , itemID : int, itemCost : int)
+    
+    + getItemName() const : std::string
+    + getItemAbility() const : std::string
+    + getItemID() const : int
+    + getItemCost() const : int
+
+    + use(characters[4] : Character *) = 0 {abstract} : bool
+
+    + <<friend>> operator<<(outputStream : std::ostream &, itemToPrint : const Item &) : std::ostream &
+
+    - itemName : std::string
+    - itemAbility : std::string
+    - itemID : int
+    - itemCost : int
+};
+
+class SmallHealthPotion
+{
+    + SmallHealthPotion()
+    + use(characters[4] : Character *) : bool
+}
+
+class LargeHealthPotion
+{
+    + LargeHealthPotion()
+    + use(characters[4] : Character *) : bool
+}
+
+class RevivePotion
+{
+    + RevivePotion()
+    + use(characters[4] : Character *) : bool
+}
+
+class StrengthPotion
+{
+    + StrengthPotion()
+    + use(characters[4] : Character *) : bool
+}
+
+Inventory *-- HashTable : owns
+Inventory --> Item : uses
+
+SmallHealthPotion --|> Item : inherits
+LargeHealthPotion --|> Item : inherits
+RevivePotion --|> Item : inherits
+StrengthPotion --|> Item : inherits
+
+@enduml

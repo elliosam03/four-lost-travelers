@@ -1,0 +1,95 @@
+@startuml Character
+skinparam ClassAttributeIconSize 0
+
+class Character 
+{
+    - characterName : std::string
+    - profession : std::string
+    - level : int
+    - health : int
+    - healthCapacity : int
+    - damageReduction : int
+    
+    - weapon : Weapon
+
+    + Character()
+    + Character(name : std::string, profession : std::string, level : int, healthCapacity : int, damageReduction : int, weapon : Weapon)
+    + Character(other : const Character &)
+    + operator=(other : const Character &) : Character &
+
+    + getCharacterName() const : std::string
+    + getProfession() const : std::string
+    + getLevel() const : int
+    + getHealth() const : int
+    + getHealthCapacity() const : int
+    + getDamageReduction() const : int
+    + getWeapon() const : Weapon
+    + getInventory() const : std::string
+
+    + setHealth(health : int) : void
+
+    + attack(Enemy &target) : {abstract} void
+    + selfHeal() : {abstract} void
+    + healOthers(characters[4] : Character *) : {abstract} void
+
+    + takeDamage(damage : int) : void
+    + heal(heal : int) : void
+    + isDead() const : bool
+
+    + levelUp() : void
+    + resetHealth() : void
+    
+    <<friend>> operator<<(outputStream : std::ostream &, characterToPrint : const Character &) : std::ostream &
+}
+
+class Weapon 
+{
+    - weaponName : std::string
+    - weaponDamage : int
+    - weaponHeal : int
+
+    + Weapon()
+    + Weapon(name : std::string, damage : int, heal : int)
+    
+    + getWeaponName() const : std::string
+    + getWeaponDamage() const : int
+    + getWeaponHeal() const : int
+
+    + weaponLevelUp() : void
+
+    <<friend>> operator<<(outputStream : std::ostream &, weaponToPrint : const Weapon &) : std::ostream &
+}
+
+class Warrior 
+{
+    + Warrior()
+    + attack(target : Enemy &) override : void
+}
+
+class Archer 
+{
+    + Archer()
+    + attack(target : Enemy &) override : void
+}
+
+class Mage 
+{
+    + Mage()
+    + attack(target : Enemy &) override : void
+}
+
+class Healer 
+{
+    + Healer()
+    + selfHeal() override : void
+    + healOthers(characters[4] : Character *) override : void
+}
+
+Character *-- Weapon : owns
+
+Warrior --|> Character : inherits
+Archer --|> Character : inherits
+Mage --|> Character : inherits
+Healer --|> Character : inherits
+
+@enduml

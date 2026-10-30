@@ -1,0 +1,13 @@
+schema: "classroom50/repo-config/v1"
+classroom: "50c-202620"
+assignment: "fa26-final-project"
+secret: "krfy4503"
+owner:
+  username: "elliosam03"
+  id: 179337328
+  accepted_at: "2026-08-29T04:40:21Z"
+source:
+  owner: "CSCI202FW"
+  owner_id: 170132889
+  repo: "M08-Assign-1-Starter"
+  branch: "main"

@@ -1,0 +1,140 @@
+@startuml GameBehavior
+
+start
+
+: Display Intro Prompts;
+
+: Create Characters;
+
+while (User Continues and Not Beat Game?) is (yes)
+
+    while (Players Alive and Not Beat Game?) is (yes)
+
+        : Create Enemies;
+
+        : Create Levels;
+        : Create Rooms;
+
+        while (Players Alive and Not Beat Game?) is (yes)
+
+            : Get Current Level;
+            : Get Current Room;
+
+            if (More Levels?) is (yes)
+
+                : Enter Level;
+
+                if (Level Has More Rooms?) is (yes)
+
+                    : User Decides Room To Enter;
+
+                    if (Room Has Combat?) is (yes)
+
+                        while (Players Alive and Enemy Alive) is (yes)
+
+                            if (Players' Turn To Attack?) is (yes)
+
+                                : Display Attacking Enemy;
+                                : Display Living Players;
+
+                                : User Chooses Which Player Acts;
+
+                                    if (Chosen Player Is Healer) is (yes)
+
+                                        : Display Healer Actions;
+
+                                        : User Chooses Healing Action;
+
+                                        if (User Chooses To Heal Healer) is (yes)
+
+                                            : Healer Heals Himself;
+
+                                        else (no)
+
+                                            : Healer Heals Everyone Else;
+
+                                        endif
+
+                                    else (no)
+
+                                        : Chosen Player Attacks;
+                                        : Enemy Takes Damage;
+
+                                    endif
+
+                            else (no)
+
+                                : Display Attacking Enemy;
+
+                                : Decision Tree Decides Attack;
+
+                                : Enemy Attacks Random Living Player;
+                                
+                                : Player Takes Damage;
+
+                            endif
+
+                        endwhile
+
+                        if (Enemy Dead?) is (yes)
+
+                            : Display Player Level Up Options;
+
+                            : User Levels-Up Chosen Player Stat;
+
+                        endif
+
+                    else (no)
+
+                        if (Room Has Merchant?) is (yes)
+
+                            : Interact With Merchant;
+
+                        else (no)
+
+                            : Open Chest For Loot;
+
+                        endif
+
+                    endif
+
+                endif
+
+            endif
+
+        endwhile
+
+    endwhile
+
+    if (Beat Game?) is (no)
+
+        : Reset Players Healths;
+
+        : Display Restart Prompt;
+
+        if (User Wants Player Stats) is (yes)
+
+            : Display Team Deaths;
+            : Display Current Player Stats;
+            : Display Current Inventory;
+
+        endif
+
+    else (yes)
+
+        : Display Game Congratulations;
+
+        if (User Wants Player Stats) is (yes)
+
+            : Display Team Deaths;
+            : Display Final Player Stats;
+
+        endif
+    
+    endif
+
+endwhile
+
+stop
+
+@enduml

@@ -1,0 +1,65 @@
+@startuml Complete
+skinparam ClassAttributeIconSize 0
+
+LinkedList *-- Node : owns
+LinkedList --> LinkedListIterator : uses
+LinkedListIterator --> Node : uses
+
+LevelsLinkedList --|> LinkedList : inherits
+LevelsLinkedList -- Level : builds
+
+Stack *-- Node : owns
+
+EnemiesStack --|> Stack : inherits
+EnemiesStack -- Enemy : builds
+
+Queue *-- Node : owns
+
+BinaryTree *-- BinaryNode : owns
+
+AttackDecisionTree --|> BinaryTree : inherits
+AttackDecisionTree --> AttackDecision : uses
+
+HashTable *-- Node : owns
+
+Graph *-- GraphLinkedList : owns
+GraphLinkedList --|> LinkedList : inherits
+
+
+Level *-- Room : owns
+
+
+Character *-- Weapon : owns
+
+Warrior --|> Character : inherits
+Archer --|> Character : inherits
+Mage --|> Character : inherits
+Healer --|> Character : inherits
+
+
+Inventory *-- HashTable : owns
+Inventory --> Item : uses
+
+SmallHealthPotion --|> Item : inherits
+LargeHealthPotion --|> Item : inherits
+RevivePotion --|> Item : inherits
+StrengthPotion --|> Item : inherits
+
+
+Mimic --|> Enemy : inherits
+WildDog --|> Enemy : inherits
+Skeleton --|> Enemy : inherits
+Spider --|> Enemy : inherits
+Goblin --|> Enemy : inherits
+Scion --|> Enemy : inherits
+Inferius --|> Enemy : inherits
+
+Boss1 --|> Enemy : inherits
+Boss2 --|> Enemy : inherits
+Boss3 --|> Enemy : inherits
+Boss4 --|> Enemy : inherits
+Boss5 --|> Enemy : inherits
+
+Enemy *-- AttackDecisionTree : owns
+
+@enduml

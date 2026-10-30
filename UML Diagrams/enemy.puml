@@ -1,0 +1,121 @@
+@startuml Enemy
+skinparam ClassAttributeIconSize 0
+
+class Enemy 
+{ 
+    - enemyName : std::string
+    - health : int
+    - healthCapacity : int
+    - damage : int
+    - decisionTree : AttackDecisionTree
+
+    + Enemy()
+    + Enemy(name : std::string, healthCapacity : int, damage : int)
+    + Enemy(other : const Enemy &)
+    + operator=(other : const Enemy &) : Enemy &
+    + ~Enemy() : {abstract}
+
+    + getEnemyName() const : std::string
+    + getHealth() const : int
+    + getHealthCapacity() const : int
+    + getDamage() const : int
+
+    + attack(target : Character &) : {abstract} void
+    + decideAttack() : std::string
+    + performDecidedAttack(target : Character &) : void
+
+    + takeDamage(damage : int) : void
+    + isDead() const : bool
+
+    <<friend>> operator<<(outputStream : std::ostream &, enemyToPrint : const Enemy &) : std::ostream &
+}
+
+class Mimic
+{
+    Mimic()
+    attack(target : Character &) override : void
+}
+
+class Wolf
+{
+    Wolf()
+    attack(target : Character &) override : void
+}
+
+class Skeleton
+{
+    Skeleton()
+    attack(target : Character &) override : void
+}
+
+class Spider
+{
+    Spider()
+    attack(target : Character &) override : void
+}
+
+class Goblin
+{
+    Goblin()
+    attack(target : Character &) override : void
+}
+
+class Scion
+{
+    Scion()
+    attack(target : Character &) override : void
+}
+
+class Inferius
+{
+    Inferius()
+    attack(target : Character &) override : void
+}
+
+class Boss1
+{
+    Boss1()
+    attack(target : Character &) override : void
+}
+
+class Boss2
+{
+    Boss2()
+    attack(target : Character &) override : void
+}
+
+class Boss3
+{
+    Boss3()
+    attack(target : Character &) override : void
+}
+
+class Boss4
+{
+    Boss4()
+    attack(target : Character &) override : void
+}
+
+class Boss5
+{
+    Boss5()
+    attack(target : Character &) override : void
+}
+
+Mimic --|> Enemy : inherits
+WildDog --|> Enemy : inherits
+Skeleton --|> Enemy : inherits
+Spider --|> Enemy : inherits
+Goblin --|> Enemy : inherits
+Scion --|> Enemy : inherits
+Inferius --|> Enemy : inherits
+
+Boss1 --|> Enemy : inherits
+Boss2 --|> Enemy : inherits
+Boss3 --|> Enemy : inherits
+Boss4 --|> Enemy : inherits
+Boss5 --|> Enemy : inherits
+
+Enemy *-- AttackDecisionTree : owns
+
+@enduml

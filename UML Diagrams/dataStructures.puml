@@ -1,0 +1,212 @@
+@startuml DataStructures
+skinparam ClassAttributeIconSize 0
+
+class "LinkedList<t>" as LinkedList
+{
+    - copyList(otherList : const LinkedList<t> &) : void
+    
+    # head : Node<t> *
+    # tail : Node<t> *
+    # count : int
+
+    + LinkedList()
+    + LinkedList(otherList : const LinkedList<t> &)
+    + operator=(listToCopy : const LinkedList<t> &) : const LinkedList<t> &
+    + ~LinkedList()
+    + isEmptyList() const : bool
+    + length() const : int
+    + print(out = std::cout : std::ostream &, separator = " -> " : std::string) const : void
+    
+    + begin() : LinkedListIterator<t>
+    + end() : LinkedListIterator<t>
+    
+    + deleteNodes() : {abstract} void
+    + insert(newInfo : const t &) : {abstract} void
+}
+class "LinkedListIterator<t>" as LinkedListIterator
+{
+    - current : Node<t> *
+
+    + LinkedListIterator()
+    + LinkedListIterator(n : Node<t> *)
+    + operator*() : t
+    + operator++() : LinkedListIterator<t>
+    + operator--() : LinkedListIterator<t>
+    + operator==(otherIter : const LinkedListIterator<t> &) const : bool
+    + operator!=(otherIter : const LinkedListIterator<t> &) const : bool
+}
+class "LevelsLL<t>" as LevelsLinkedList
+{
+    + ~LevelsLL()
+    + insert(newData : const t &) override : void
+    + deleteNodes() override : void
+}
+
+class "Stack<t>" as Stack
+{
+    - copyStack(otherStack : const Stack<t> &) : void
+
+    # head : Node<t> *
+    # tail : Node<t> *
+    # count : int
+
+    + Stack()
+    + Stack(otherStack : const Stack<t> &)
+    + operator=(stackToCopy : const Stack<t> &) : const Stack<t> &
+    
+    + ~Stack() : {abstract}
+    + deleteNodes() : {abstract} void
+    + isEmptyStack() const : bool
+    
+    + push(newData : const t &) : void
+    + pop() : {abstract} void
+    + top() const : t &
+}
+class "EStack<t>" as EnemiesStack
+{
+    + ~EStack();
+    + deleteNodes() override : void
+    + pop() override : void
+}
+
+class "Queue<t>" as Queue
+{
+    - copyQueue(otherQueue : const Queue<t> &) : void
+
+    # head : Node<t> *
+    # tail : Node<t> *
+    # count : int
+
+    + Queue()
+    + Queue(otherQueue : const Queue<t> &)
+    + operator=(queueToCopy : const Queue<t> &) : const Queue<t> &
+
+    + ~Queue()
+    + deleteNodes() : {abstract} void
+    + isEmptyQueue() const : bool
+
+    + enqueue(newData : const t &) : void
+    + dequeue() : {abstract} void 
+    + front() const : t
+}
+
+class "BinaryTree<t>" as BinaryTree
+{
+    + BinaryTree()
+    + BinaryTree(treeToCopy : const BinaryTree<t> &)
+    + operator=(treeToCopy : const BinaryTree<t> &) : const BinaryTree<t> &
+    + ~BinaryTree()
+    + isEmpty() const : bool
+
+    + treeHeight() const : int
+    + treeNodeCount() const : int
+    + treeLeavesCount() const : int
+
+    # root : BinaryNode<t> *
+
+    - copyTree(myTreeNode : BinaryNode<t> *&, treeToCopyNode : BinaryNode<t> *) : void
+    - destroy(currentNode : BinaryNode<t> *&) : void
+        
+    - nodeCount(currentNode : BinaryNode<t> *) const : int
+    - height(currentNode : BinaryNode<t> *) const : int
+    - leavesCount(currentNode : BinaryNode<t> *) const : int
+}
+class "AttackDecisionTree<AttackDecision>" as AttackDecisionTree
+{
+    + AttackDecisionTree()
+    + AttackDecision getAttack(health : double, healthCapacity : double)
+
+    - AttackDecision traverse(node : BinaryNode<AttackDecision> *, healthPercent : double)
+}
+struct AttackDecision
+{
+    + healthThreshold : int
+    + attack : AttackType
+
+    + AttackDecision()
+    + AttackDecision(threshold : int, type : AttackType)
+}
+
+class HashTable
+{
+    + HashTable()
+    + ~HashTable()
+
+    + insert(num : int) : void
+    + remove(num : int) : void
+    + search(num : int) : bool
+
+    + getInserts() : int
+    + getDuplicates(num : int) : int
+    + getCollisions() : double
+
+    - hashIndex : int
+    - HT_SIZE = 10 : int
+    - htArr : Node<int> **;
+    
+    - inserts = 0 : int
+    - collisions = 0 : int
+
+    - hash(num : int) : int
+}
+
+class Graph
+{
+    + Graph( size = 0 : int)
+    + isEmpty() const : bool
+    + createGraph() : void
+    + clearGraph() : void
+
+    + getAdjacentVertices(vertex : int) ;: GraphLL<int> &
+    
+    + <<friend>> operator<<(out : std::ostream &, g : Graph &) : std::ostream &
+
+    - maxSize = 0 : int
+    - graph : std::vector<GraphLL<int>>
+}
+class "GraphLL<t>" as GraphLinkedList
+{
+    + ~GraphLL()
+    + deleteNodes() override : void
+    + insert(newData : const t &) override : void
+}
+
+struct "Node<t>" as Node
+{
+    + data : t
+    + prevLink : Node<t> *  
+    + forwLink : Node<t> *
+    + Node(data : t, prevLink = nullptr : Node<t> *, forwLink = nullptr : Node<t> *)
+}
+
+struct "BinaryNode<t>" as BinaryNode
+{
+    + data : t
+    + lLink : BinaryNode<t> *
+    + rLink : BinaryNode<t> *
+    + BinaryNode(data : t)
+}
+
+LinkedList *-- Node : owns
+LinkedList --> LinkedListIterator : uses
+LinkedListIterator --> Node : uses
+
+LevelsLinkedList --|> LinkedList : inherits
+
+Stack *-- Node : owns
+
+EnemiesStack --|> Stack : inherits
+
+Queue *-- Node : owns
+
+BinaryTree *-- BinaryNode : owns
+
+AttackDecisionTree --|> BinaryTree : inherits
+AttackDecisionTree --> AttackDecision : uses
+
+HashTable *-- Node : owns
+
+Graph *-- GraphLinkedList : owns
+GraphLinkedList --|> LinkedList : inherits
+
+@enduml

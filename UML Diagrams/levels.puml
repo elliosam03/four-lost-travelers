@@ -1,0 +1,35 @@
+@startuml Levels
+skinparam ClassAttributeIconSize 0
+
+class Level
+{
+    - levelNum : int
+    - rooms : std::vector<Room*>
+
+    + Level()
+    + Level(levelNum : int )
+    + ~Level()
+
+    + addRoom(room : Room *) : void
+
+    + getLevelNum() const : int
+    + getRoomCount() const : int
+    + getRoom(index : int) const : Room *
+}
+
+class Room
+{
+    - roomNum : int
+    - contents : int
+
+    + Room()
+    + Room(roomNum : int, contents : int)
+
+    + roomContents() : int
+
+    + getRoomNum() const : int
+}
+
+Level *-- Room : owns
+
+@enduml

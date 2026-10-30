@@ -1,6 +1,6 @@
-/* Program name: Final Project
+/* Program name: Four Lost Travelers
 * Author: Sam Elliott
-* Date last updated: 10/17/2026
+* Date last updated: 10/29/2026
 * Purpose: Dungeon Crawler Game
 */
 

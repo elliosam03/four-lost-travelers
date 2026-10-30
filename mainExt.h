@@ -13,33 +13,25 @@
 #include <ctime>
 // #include <crtdbg.h>   // for memory leaks
 
-// function prototypes
-void introText();
-void createEnemies(EStack<Enemy*> &enemies);
-void createLevels(LevelsLL<Level*> &levels);
-int enterNextRoom(LinkedListIterator<Level*> &levelIter, LevelsLL<Level*> &levels, Graph &roomGraph, Room *&room, bool &beatGame);
-Room *findRoom(LevelsLL<Level*> &levels, int roomNum);
-void combat(EStack<Enemy*> &enemies, Character *characters[4], bool &playerAlive, bool &beatGame, Inventory &inventory);
-void enemyAttack(EStack<Enemy*> &enemies, Character *characters[4], bool &startCombat, bool &playerAlive);
-void playerAttack(EStack<Enemy*> &enemies, Character *characters[4], bool &startCombat, bool &playerAlive, bool &beatGame, Inventory &inventory);
-bool merchant(EStack<Enemy*> &enemies, Inventory &inventory);
-void chest(Inventory &inventory);
-std::string resetPlayers(Character *characters[4], int &teamDeaths, Inventory &inventory);
-void beatGameMsg(Character *characters[4], int &teamDeaths, Inventory &inventory);
-void displayCharacterStats(Character *characters[4], int &teamDeaths, Inventory &inventory);
-void enter();
-void resetStream();
+void resetStream() 
+{
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
 
-// function definitions
+void enter()
+{
+    std::cout << "     \"enter\"\n";
+    std::cin.get();
+    resetStream();
+}
 
 void introText()
 {
     std::cout << 
     "Four weary travelers have spent the entire day crossing a remote and unforgiving wilderness. As evening approaches, a violent storm rolls across the mountains, bringing freezing rain, howling winds, and frequent lighting strikes. With night falling fast, they realize they have no chance of reaching the nearest settlement before the storm becomes too dangerous.\n\n";
 
-    std::cout << "     \"enter\"\n";
-    std::cin.get();
-    resetStream();
+    enter();
 
     std::cout << 
     "Desperate for shelter, they discover the dark entrance of a large cave hidden beneath a rocky cliff. With nowhere else to go and the storm closing in behind them, they decide the cave is their safest option. They light their torches and cautiously make their way inside, relieved to finally be out of the cold.\n\n";
@@ -167,6 +159,30 @@ void createLevels(LevelsLL<Level*> &levels)
     }
 }
 
+Room *findRoom(LevelsLL<Level*> &levels, int roomNum)
+{
+    LinkedListIterator<Level*> levelIter = levels.begin();
+
+    while (levelIter != levels.end())
+    {
+        Level *level = *levelIter;
+
+        for (int i = 0; i < level->getRoomCount(); ++i)
+        {
+            Room *room = level->getRoom(i);
+
+            if (room->getRoomNum() == roomNum)
+            {
+                return room;   // return found room
+            }
+        }
+
+        ++levelIter;
+    }
+
+    return nullptr;   // room not found
+}
+
 int enterNextRoom(LinkedListIterator<Level*> &levelIter, LevelsLL<Level*> &levels, Graph &roomGraph, Room *&currentRoom, bool &beatGame)
 {
     Level* currentLevel = *levelIter;   // get current level from iter
@@ -274,60 +290,6 @@ int enterNextRoom(LinkedListIterator<Level*> &levelIter, LevelsLL<Level*> &level
     }
 
     return currentRoom->roomContents();
-}
-
-Room *findRoom(LevelsLL<Level*> &levels, int roomNum)
-{
-    LinkedListIterator<Level*> levelIter = levels.begin();
-
-    while (levelIter != levels.end())
-    {
-        Level *level = *levelIter;
-
-        for (int i = 0; i < level->getRoomCount(); ++i)
-        {
-            Room *room = level->getRoom(i);
-
-            if (room->getRoomNum() == roomNum)
-            {
-                return room;   // return found room
-            }
-        }
-
-        ++levelIter;
-    }
-
-    return nullptr;   // room not found
-}
-
-void combat(EStack<Enemy*> &enemies, Character *characters[4], bool &playerAlive, bool &beatGame, Inventory &inventory)
-{
-    bool startCombat = true;
-
-    Queue<std::string> turns;
-
-    // attack order
-    turns.enqueue("enemy");   // enemy attacks first
-    turns.enqueue("player");
-
-    while (startCombat && playerAlive) {
-
-        // enemy's turn
-        if (turns.front() == "enemy") 
-        {
-            enemyAttack(enemies, characters, startCombat, playerAlive);
-            turns.dequeue();
-            turns.enqueue("enemy");
-        }
-        
-        // players' turn
-        else if (turns.front() == "player")
-        {
-            playerAttack(enemies, characters, startCombat, playerAlive, beatGame, inventory);
-            turns.dequeue();
-            turns.enqueue("player");
-        }
-    }
 }
 
 void enemyAttack(EStack<Enemy*> &enemies, Character *characters[4], bool &startCombat, bool &playerAlive)
@@ -565,6 +527,36 @@ void playerAttack(EStack<Enemy*> &enemies, Character *characters[4], bool &start
     }
 }
 
+void combat(EStack<Enemy*> &enemies, Character *characters[4], bool &playerAlive, bool &beatGame, Inventory &inventory)
+{
+    bool startCombat = true;
+
+    Queue<std::string> turns;
+
+    // attack order
+    turns.enqueue("enemy");   // enemy attacks first
+    turns.enqueue("player");
+
+    while (startCombat && playerAlive) {
+
+        // enemy's turn
+        if (turns.front() == "enemy") 
+        {
+            enemyAttack(enemies, characters, startCombat, playerAlive);
+            turns.dequeue();
+            turns.enqueue("enemy");
+        }
+        
+        // players' turn
+        else if (turns.front() == "player")
+        {
+            playerAttack(enemies, characters, startCombat, playerAlive, beatGame, inventory);
+            turns.dequeue();
+            turns.enqueue("player");
+        }
+    }
+}
+
 bool merchant(EStack<Enemy*> &enemies, Inventory &inventory)
 {
     std::cout << "Sitting by the fire they see an old man covered in tattered rags.\n\n";
@@ -704,6 +696,22 @@ void chest(Inventory &inventory)
     }
 }
 
+void displayCharacterStats(Character *characters[4], int &teamDeaths, Inventory &inventory)
+{
+    if (teamDeaths != 0)
+    {
+        std::cout << "\nTeam Deaths: " << teamDeaths << "\n\n";
+    }
+
+    std::cout << *characters[0] << std::endl;
+    std::cout << *characters[1] << std::endl;
+    std::cout << *characters[2] << std::endl;
+    std::cout << *characters[3] << std::endl;
+    std::cout << "Coins: " << inventory.getCoins() << std::endl;
+    inventory.printInventory();
+    std::cout << std::endl;
+}
+
 std::string resetPlayers(Character *characters[4], int &teamDeaths, Inventory &inventory)
 {
     std::cout << "Everyone has died. Back to the beginning they go.\n\n";
@@ -745,35 +753,6 @@ void beatGameMsg(Character *characters[4], int &teamDeaths, Inventory &inventory
     enter();
     
     displayCharacterStats(characters, teamDeaths, inventory);
-}
-
-void displayCharacterStats(Character *characters[4], int &teamDeaths, Inventory &inventory)
-{
-    if (teamDeaths != 0)
-    {
-        std::cout << "\nTeam Deaths: " << teamDeaths << "\n\n";
-    }
-
-    std::cout << *characters[0] << std::endl;
-    std::cout << *characters[1] << std::endl;
-    std::cout << *characters[2] << std::endl;
-    std::cout << *characters[3] << std::endl;
-    std::cout << "Coins: " << inventory.getCoins() << std::endl;
-    inventory.printInventory();
-    std::cout << std::endl;
-}
-
-void enter()
-{
-    std::cout << "     \"enter\"\n";
-    std::cin.get();
-    resetStream();
-}
-
-void resetStream() 
-{
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
 #endif

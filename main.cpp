@@ -25,6 +25,7 @@ int main()
     int teamDeaths = 0;
 
     std::cout << "The following are your initial player stats: \n\n";
+    enter();
     displayCharacterStats(characters, teamDeaths, inventory);
 
     std::cout << "(C)ontinue or (Q)uit?" << std::endl;

@@ -20,10 +20,14 @@ void resetStream()
 }
 
 void enter()
-{
+{    
     std::cout << "     \"enter\"\n";
-    std::cin.get();
-    resetStream();
+
+    std::string input;
+    
+    std::getline(std::cin, input);
+
+    input.clear();
 }
 
 void introText()
@@ -231,6 +235,7 @@ int enterNextRoom(LinkedListIterator<Level*> &levelIter, LevelsLL<Level*> &level
                 std::cin >> direction;
             }
 
+            resetStream();
             std::cout << std::endl;
 
             srand(time(NULL));   // direction is random each time regardless of user choice - haha
@@ -344,8 +349,7 @@ void enemyAttack(EStack<Enemy*> &enemies, Character *characters[4], bool &startC
 
         enemies.top()->attack(*target);   // enemy attacks targeted player
 
-        std::cout << "     \"enter\"\n";
-        std::cin.get();
+        enter();
     }
 }
 
@@ -522,7 +526,7 @@ void playerAttack(EStack<Enemy*> &enemies, Character *characters[4], bool &start
                 std::cout << std::endl;
             }
         }
-
+        resetStream();
         enter();
     }
 }
@@ -724,7 +728,11 @@ std::string resetPlayers(Character *characters[4], int &teamDeaths, Inventory &i
     // output current character stats
     if (input == "y" || input == "Y") 
     {
+        resetStream();
+
         displayCharacterStats(characters, teamDeaths, inventory);
+
+        enter();
     }
 
     // revive players
@@ -733,7 +741,7 @@ std::string resetPlayers(Character *characters[4], int &teamDeaths, Inventory &i
     characters[2]->resetHealth();
     characters[3]->resetHealth();
 
-    std::cout << "\nStill trapped in the cave, but now with a new sense of mortality, the four travelors make their way deeper into the cave to the first chamber.\n\n";
+    std::cout << "Still trapped in the cave, but now with a new sense of mortality, the four travelors make their way deeper into the cave to the first chamber.\n\n";
 
     std::cout << "(C)ontinue or (Q)uit?" << std::endl;
     std::string playGame;

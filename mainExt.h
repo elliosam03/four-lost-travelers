@@ -91,7 +91,7 @@ bool saveDataPrompt()
     return false;
 }
 
-int loadInSaveData(Character *characters[4])
+int loadInSaveData(Character *characters[4], Inventory &inventory)
 {
     std::ifstream in ("saveData.txt");
 
@@ -112,14 +112,25 @@ int loadInSaveData(Character *characters[4])
         characters[i]->setWeapon(weaponDamage, weaponHeal);
     }
 
-    // add inventory
+    int coins;
+
+    in >> coins;
+
+    inventory.setCoins(coins);
+
+    int itemID;
+
+    while (in >> itemID) 
+    {
+        inventory.insert(inventory.getItemName(itemID));
+    }
 
     in.close();
 
     return teamDeaths;
 }
 
-void loadOutSaveData(Character *characters[4], int teamDeaths)
+void loadOutSaveData(Character *characters[4], int teamDeaths, Inventory &inventory)
 {
     std::ofstream out ("saveData.txt", std::ios::trunc);
 
@@ -138,11 +149,13 @@ void loadOutSaveData(Character *characters[4], int teamDeaths)
         out << level << " " << healthCapacity << " " << damageReduction << " " << weaponDamage << " " << weaponHeal << "\n\n";
     }
 
-    // add inventory
+    out << inventory.getCoins() << "\n\n";
+
+    // out << ;
 
     out.close();
 
-    std::cout << "\nGame Saved";
+    std::cout << "Game Saved" << std::endl;
 }
 
 void createEnemies(EStack<Enemy*> &enemies)

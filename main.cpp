@@ -27,7 +27,7 @@ int main()
 
     if (saveData) 
     {
-        teamDeaths = loadInSaveData(characters);
+        teamDeaths = loadInSaveData(characters, inventory);
     }
 
     std::cout << "The following are your initial player stats: \n\n";
@@ -97,7 +97,7 @@ int main()
         }
     }
 
-    loadOutSaveData(characters, teamDeaths);
+    loadOutSaveData(characters, teamDeaths, inventory);
 
     return 0;
 }

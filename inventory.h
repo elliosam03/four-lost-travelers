@@ -26,6 +26,7 @@ public:
     void addCoins(int num);
     void payCoins(int num);
     int getCoins();
+    void setCoins(int num);
 
     void printInventory();
     void printMerchantItems();
@@ -145,6 +146,12 @@ void Inventory::payCoins(int num)
 int Inventory::getCoins()
 {
     return coins;
+}
+
+// set coin count
+void Inventory::setCoins(int num)
+{
+    coins = num;
 }
 
 // print current inventory

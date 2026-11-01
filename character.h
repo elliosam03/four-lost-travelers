@@ -31,7 +31,11 @@ public:
     int getDamageReduction() const;
     Weapon getWeapon() const;
 
+    void setLevel(int level);
     void setHealth(int health);
+    void setHealthCapacity(int healthCapacity);
+    void setDamageReduction(int damageReduction);
+    void setWeapon(int weaponDamage, int weaponHeal);
 
     virtual void attack(Enemy &target) {};
     virtual void selfHeal() {};
@@ -135,10 +139,32 @@ Weapon Character::getWeapon() const
     return weapon;
 }
 
-// health setter
+// setter
+
+void Character::setLevel(int level)
+{
+    this->level = level;
+}
+
 void Character::setHealth(int health)
 {
     this->health = health;
+}
+
+void Character::setHealthCapacity(int healthCapacity)
+{
+    this->healthCapacity = healthCapacity;
+}
+
+void Character::setDamageReduction(int damageReduction)
+{
+    this->damageReduction = damageReduction;
+}
+
+void Character::setWeapon(int weaponDamage, int weaponHeal)
+{
+    this->weapon.setWeaponDamage(weaponDamage);
+    this->weapon.setWeaponHeal(weaponHeal);
 }
 
 // combat functions

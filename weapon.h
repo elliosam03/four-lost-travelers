@@ -19,6 +19,9 @@ public:
     int getWeaponDamage() const;
     int getWeaponHeal() const;
 
+    void setWeaponDamage(int weaponDamage);
+    void setWeaponHeal(int weaponHeal);
+    
     void weaponLevelUp();
 
     friend std::ostream &operator<<(std::ostream &outputStream, const Weapon &weaponToPrint);
@@ -55,6 +58,18 @@ int Weapon::getWeaponDamage() const
 int Weapon::getWeaponHeal() const
 {
     return weaponHeal;
+}
+
+// setters
+
+void Weapon::setWeaponDamage(int weaponDamage)
+{
+    this->weaponDamage = weaponDamage;
+}
+
+void Weapon::setWeaponHeal(int weaponHeal)
+{
+    this->weaponHeal = weaponHeal;
 }
 
 // weapon upgrade

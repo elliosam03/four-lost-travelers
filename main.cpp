@@ -23,6 +23,12 @@ int main()
     bool playerAlive = true;
     int contents;
     int teamDeaths = 0;
+    bool saveData = saveDataPrompt();
+
+    if (saveData) 
+    {
+        teamDeaths = loadInSaveData(characters);
+    }
 
     std::cout << "The following are your initial player stats: \n\n";
     enter();
@@ -90,6 +96,8 @@ int main()
             beatGameMsg(characters, teamDeaths, inventory);
         }
     }
+
+    loadOutSaveData(characters, teamDeaths);
 
     return 0;
 }

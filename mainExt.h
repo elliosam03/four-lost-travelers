@@ -11,6 +11,7 @@
 #include "inventory.h"
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
 // #include <crtdbg.h>   // for memory leaks
 
 void resetStream() 
@@ -63,6 +64,85 @@ void introText()
     "As they venture into the cavern they stumble upon a large open room and decide to enter.\n\n";
 
     enter();
+}
+
+bool saveDataPrompt()
+{
+    std::ifstream in ("saveData.txt");
+
+    int deathCount;
+
+    if (in >> deathCount)
+    {
+        std::string choice;
+
+        std::cout << "Would you like to load in the previous game? (y or n)" << std::endl;
+
+        std::cin >> choice;
+        while (choice != "y" && choice != "n")
+        {
+            std::cout << "Please enter y or n." << std::endl;
+            std::cin >> choice;
+        }
+
+        if (choice == "y") return true;
+    }
+
+    return false;
+}
+
+int loadInSaveData(Character *characters[4])
+{
+    std::ifstream in ("saveData.txt");
+
+    int teamDeaths;
+
+    in >> teamDeaths;
+
+    int level, healthCapacity, damageReduction, weaponDamage, weaponHeal;
+        
+    for (int i = 0; i < 4; ++i)
+    {
+        in >> level >> healthCapacity >> damageReduction >> weaponDamage >> weaponHeal;
+        
+        characters[i]->setLevel(level);
+        characters[i]->setHealthCapacity(healthCapacity);
+        characters[i]->setHealth(healthCapacity);
+        characters[i]->setDamageReduction(damageReduction);
+        characters[i]->setWeapon(weaponDamage, weaponHeal);
+    }
+
+    // add inventory
+
+    in.close();
+
+    return teamDeaths;
+}
+
+void loadOutSaveData(Character *characters[4], int teamDeaths)
+{
+    std::ofstream out ("saveData.txt", std::ios::trunc);
+
+    out << teamDeaths << "\n\n";
+
+    int level, healthCapacity, damageReduction, weaponDamage, weaponHeal;
+        
+    for (int i = 0; i < 4; ++i)
+    {
+        level = characters[i]->getLevel();
+        healthCapacity = characters[i]->getHealthCapacity();
+        damageReduction = characters[i]->getDamageReduction();
+        weaponDamage = characters[i]->getWeapon().getWeaponDamage();
+        weaponHeal = characters[i]->getWeapon().getWeaponHeal();
+
+        out << level << " " << healthCapacity << " " << damageReduction << " " << weaponDamage << " " << weaponHeal << "\n\n";
+    }
+
+    // add inventory
+
+    out.close();
+
+    std::cout << "\nGame Saved";
 }
 
 void createEnemies(EStack<Enemy*> &enemies)

@@ -13,7 +13,9 @@ public:
     // health = 70
     // damageReduction = 10 %
     // weapon = sword     // damage = 15, heal = 0
-    // inventoryCapacity = 2     // potential items = shield
+
+    // potential items = shield
+
     Warrior() :
         Character("Magnus", "Warrior", 1, 70, 10, Weapon("Sword", 15, 0)) {};
 
@@ -28,13 +30,15 @@ public:
 class Mage : public Character 
 {
 public:
-    // name = archibald
+    // name = vera
     // profession = mage
     // level = 1
     // health = 50
     // damageReduction = 20 %
     // weapon = staff     // damage = 10, heal = 0
-    // inventoryCapacity = 6     // potential items = fireSpell, iceSpell, protectSpell
+
+    // potential items = fireSpell, iceSpell, protectSpell
+
     Mage() : 
         Character("Vera", "Mage", 1, 50, 20, Weapon("Staff", 10, 0)) {};
 
@@ -55,7 +59,9 @@ public:
     // health = 40
     // damageReduction = 5 %
     // weapon = bow     // damage = 10, heal = 0
-    // inventoryCapacity = 4     // potential items = fireArrows, iceArrows
+    
+    // potential items = fireArrows, iceArrows
+    
     Archer() : 
         Character("Flint", "Archer", 1, 40, 5, Weapon("Bow", 10, 0)) {};
 
@@ -76,7 +82,9 @@ public:
     // health = 10
     // damageReduction = 0 %
     // weapon = wand     // damage = 0, heal = 5
-    // inventoryCapacity = 4     // potential items = healthSteal
+    
+    // potential items = healthSteal
+    
     Healer() : 
         Character("Quassi", "Healer", 1, 10, 0, Weapon("Wand", 0, 5)) {};
 
